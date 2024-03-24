@@ -6,46 +6,18 @@ def extract_sift_features(image):
     #gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     sift = cv2.SIFT_create()
     keypoints, descriptors = sift.detectAndCompute(image, None)
-    return descriptors
+    return keypoints, descriptors
 
-# Fonction pour faire correspondre les descripteurs SIFT entre une image requête et une base de données
-def match_features(query_descriptors, database_descriptors, threshold=50):
+def match_features(probleme_d, database_d, threshold=50):
     bf = cv2.BFMatcher(cv2.NORM_L2)
-    matches = bf.match(query_descriptors, database_descriptors)
+    matches = bf.match(probleme_d, database_d)
     good_matches = []
     for m in matches:
         if m.distance < threshold:
-            good_matches.append([m])
+            good_matches.append(m)
     return good_matches
 
-# Fonction pour charger une image depuis un fichier
-def load_image(file_path):
-    return cv2.imread(file_path,0)
 
-# Fonction principale pour l'identification de l'iris
-def identify_iris(query_image_path, database_images):
-    query_image = cv2.imread(query_image_path,0)
-    query_descriptors = extract_sift_features(query_image)
-    max_matches = 0
-    best_match_image = None
-    
-    for database_image_path in database_images:
-        database_image = load_image(database_image_path)
-        database_descriptors = extract_sift_features(database_image)
-        
-        matches = match_features(query_descriptors, database_descriptors)
-        num_matches = len(matches)
-        print(database_image_path,len(matches))
-        
-        if num_matches > max_matches:
-            max_matches = num_matches
-            best_match_image = database_image_path
-            
-    # Décision basée sur le nombre de bonnes correspondances    
-    if max_matches > SEUIL:
-        print("Personne identifiée ",query_image_path,": pour un score matche de", max_matches, " avec la photo", best_match_image)
-    else:
-        print("Personne non reconnue")
 
 # Paramètres
 SEUIL = 20  # Ajustez le seuil selon vos besoins
@@ -56,7 +28,35 @@ for file in sorted(os.listdir("database1")):
     database_images.append(os.path.join("database1", file))
 
 # Chemin vers l'image requête
-query_image_path = "009L_3.png"  
+probleme = "009L_3.png"  
 
-# Identifier l'iris
-identify_iris(query_image_path, database_images)
+
+probleme_c = cv2.imread(probleme,0)
+probleme_k, probleme_d = extract_sift_features(probleme_c)
+max_matches = 0
+
+for database in database_images:
+    database_c = cv2.imread(database,0)
+    database_k, database_d = extract_sift_features(database_c)
+    
+    matches = match_features(probleme_d, database_d)
+    print(database,len(matches))
+    
+    if len(matches) > max_matches:
+        match_sol= matches
+        max_matches = len(matches)
+        solution = database
+        solution_c = database_c
+        solution_k = database_k
+            
+    # Décision basée sur le nombre de bonnes correspondances    
+if max_matches > SEUIL:
+    print("Personne identifiée ",probleme,": pour un score matche de", max_matches, " avec la photo", solution)
+else:
+    print("Personne non reconnue")
+
+comp = cv2.drawMatches(probleme_c,probleme_k,solution_c, solution_k, match_sol, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+
+cv2.imshow('comparaison', comp)
+cv2.waitKey(0)
+cv2.imwrite("result.png", comp)
