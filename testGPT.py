@@ -28,7 +28,7 @@ for file in sorted(os.listdir("database1")):
     database_images.append(os.path.join("database1", file))
 
 # Chemin vers l'image requête
-probleme = "009L_3.png"  
+probleme = "013L_1.png"  
 
 
 probleme_c = cv2.imread(probleme,0)
