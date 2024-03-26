@@ -73,7 +73,8 @@ def solution():
         print("Personne identifiée pour un score matche de", len(match_sol), " avec la photo", solution)
         comp = cv2.drawMatches(probleme_c,probleme_k,solution_c, solution_k, match_sol, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
         cv2.imwrite("workspace/result.png", comp)
-        return render_template("sol.html",x=os.path.basename(solution)[10:14])
+        x=os.path.basename(solution)[10:14]
+        return render_template("sol.html", x=str(os.path.basename(solution))[:4])
     else:
         print("Personne non reconnue")
         return render_template('refu.html')
