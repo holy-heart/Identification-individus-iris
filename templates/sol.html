@@ -6,5 +6,5 @@
     <p>votre image a éte identifier avec succées</p>
     <p>Vous etes referanceé en tant que</p> 
     <h1> {{ x }} </h1>
-    <img src="workspace/result.png" alt="solution">
+    <img src="{{ url_for('static', filename='result.png')}}">
 {% endblock %}

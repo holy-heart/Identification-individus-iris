@@ -23,7 +23,7 @@ def match_features(probleme_d, database_d, threshold=50):
 
 
 
-app=Flask(__name__)
+app=Flask(__name__, static_url_path='/static')
 @app.route("/", methods=['POST', "GET"])
 def home():
     if request.method == "POST":
@@ -72,7 +72,7 @@ def solution():
     if len(match_sol) > SEUIL:
         print("Personne identifiée pour un score matche de", len(match_sol), " avec la photo", solution)
         comp = cv2.drawMatches(probleme_c,probleme_k,solution_c, solution_k, match_sol, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-        cv2.imwrite("workspace/result.png", comp)
+        cv2.imwrite("static/result.png", comp)
         x=os.path.basename(solution)[10:14]
         return render_template("sol.html", x=str(os.path.basename(solution))[:4])
     else:
