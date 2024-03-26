@@ -29,7 +29,7 @@ def home():
     if request.method == "POST":
         image= request.files['img']
         image= image.read()
-        with open('probleme.png', "wb") as f:
+        with open('workspace/probleme.png', "wb") as f:
             f.write(image)
         return redirect(url_for("solution"))
     else:
@@ -41,7 +41,7 @@ def solution():
 # Paramètres
     
     SEUIL = 20  # Ajustez le seuil selon vos besoins
-    probleme_c = cv2.imread("probleme.png",0)
+    probleme_c = cv2.imread("workspace/probleme.png",0)
     # Base de données d'images
     database_images = []
     for file in sorted(os.listdir("database1")):
@@ -72,10 +72,8 @@ def solution():
     if len(match_sol) > SEUIL:
         print("Personne identifiée pour un score matche de", len(match_sol), " avec la photo", solution)
         comp = cv2.drawMatches(probleme_c,probleme_k,solution_c, solution_k, match_sol, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-        cv2.imwrite("result.png", comp)
-        x=os.path.basename(solution)[10:14]
-        y="result.png"
-        return render_template("sol.html",x=x,y=y)
+        cv2.imwrite("workspace/result.png", comp)
+        return render_template("sol.html",x=os.path.basename(solution)[10:14])
     else:
         print("Personne non reconnue")
         return render_template('refu.html')
