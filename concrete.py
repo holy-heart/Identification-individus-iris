@@ -11,12 +11,12 @@ def extract_sift_features(image):
     keypoints, descriptors = sift.detectAndCompute(image, None)
     return keypoints, descriptors
 
-def match_features(probleme_d, database_d, threshold=50):
-    bf = cv2.BFMatcher(cv2.NORM_L2)
-    matches = bf.match(probleme_d, database_d)
+def match_features(probleme_d, database_d, ration_distance=0.75):
+    bf = cv2.BFMatcher()
+    matches = bf.knnMatch(probleme_d, database_d, k=2)
     good_matches = []
-    for m in matches:
-        if m.distance < threshold:
+    for m, n in matches:
+        if m.distance < ration_distance* n.distance:
             good_matches.append(m)
     return good_matches
 
@@ -42,8 +42,8 @@ def home():
 def solution():
 # Paramètres
     
-    SEUIL = 20  # Ajustez le seuil selon vos besoins
-    probleme_c = cv2.imread("workspace/probleme.png",0)
+    SEUIL = 40  # Ajustez le seuil selon vos besoins
+    probleme_c = cv2.imread("workspace/probleme.png",1)
     # Base de données d'images
     database_images = []
     for file in sorted(os.listdir("database1")):
@@ -57,7 +57,7 @@ def solution():
     max_matches = 0
 
     for database in database_images:
-        database_c = cv2.imread(database,0)
+        database_c = cv2.imread(database,1)
         database_k, database_d = extract_sift_features(database_c)
         
         matches = match_features(probleme_d, database_d)

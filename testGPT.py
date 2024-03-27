@@ -8,7 +8,7 @@ def extract_sift_features(image):
     keypoints, descriptors = sift.detectAndCompute(image, None)
     return keypoints, descriptors
 
-def match_features(probleme_d, database_d, threshold=50):
+def match_features(probleme_d, database_d, threshold=150):
     bf = cv2.BFMatcher(cv2.NORM_L2)
     matches = bf.match(probleme_d, database_d)
     good_matches = []
@@ -28,7 +28,7 @@ for file in sorted(os.listdir("database1")):
     database_images.append(os.path.join("database1", file))
 
 # Chemin vers l'image requête
-probleme = "013L_1.png"  
+probleme = "009L_3.png"  
 
 
 probleme_c = cv2.imread(probleme,0)
