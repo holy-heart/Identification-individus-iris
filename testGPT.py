@@ -1,12 +1,41 @@
 import cv2
 import os
+import numpy as np
 
 # Fonction pour extraire les caractéristiques SIFT d'une image
-def extract_sift_features(image):
-    #gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+def extract_sift_features(image, diametre_cercle=100):
+    # Créer un détecteur SIFT
     sift = cv2.SIFT_create()
+    
+    # Détecter les keypoints et calculer les descripteurs
     keypoints, descriptors = sift.detectAndCompute(image, None)
-    return keypoints, descriptors
+    
+    # Trouver les dimensions de l'image
+    hauteur, largeur = image.shape[:2]
+    
+    # Trouver le centre de l'image
+    centre_x = largeur // 2
+    centre_y = hauteur // 2
+    
+    # Liste pour stocker les nouveaux keypoints à l'intérieur du cercle
+    nouveaux_keypoints = []
+    
+    # Parcourir tous les keypoints détectés
+    for kp in keypoints:
+        # Calculer la distance entre le keypoint et le centre de l'image
+        distance = ((kp.pt[0] - centre_x) ** 2 + (kp.pt[1] - centre_y) ** 2) ** 0.5
+        # Vérifier si le keypoint est à l'intérieur du cercle
+        if distance <= diametre_cercle / 2:
+            nouveaux_keypoints.append(kp)
+    
+    # Convertir la liste de nouveaux keypoints en un tableau numpy
+    nouveaux_keypoints = np.array([kp.pt for kp in nouveaux_keypoints])
+    
+    # Extraire les descripteurs correspondant uniquement aux keypoints à l'intérieur du cercle
+    indices_descripteurs = np.where([kp.pt in nouveaux_keypoints for kp in keypoints])[0]
+    nouveaux_descripteurs = descriptors[indices_descripteurs, :]
+    # Retourner les nouveaux keypoints et descripteurs
+    return nouveaux_keypoints, nouveaux_descripteurs
 
 def match_features(probleme_d, database_d, threshold=150):
     bf = cv2.BFMatcher(cv2.NORM_L2)
@@ -20,7 +49,7 @@ def match_features(probleme_d, database_d, threshold=150):
 
 
 # Paramètres
-SEUIL = 20  # Ajustez le seuil selon vos besoins
+SEUIL = 5  # Ajustez le seuil selon vos besoins
 
 # Base de données d'images
 database_images = []
@@ -28,15 +57,15 @@ for file in sorted(os.listdir("database1")):
     database_images.append(os.path.join("database1", file))
 
 # Chemin vers l'image requête
-probleme = "009L_3.png"  
+probleme = "051L_1.png"  
 
 
-probleme_c = cv2.imread(probleme,0)
+probleme_c = cv2.imread(probleme,1)
 probleme_k, probleme_d = extract_sift_features(probleme_c)
 max_matches = 0
 
 for database in database_images:
-    database_c = cv2.imread(database,0)
+    database_c = cv2.imread(database,1)
     database_k, database_d = extract_sift_features(database_c)
     
     matches = match_features(probleme_d, database_d)

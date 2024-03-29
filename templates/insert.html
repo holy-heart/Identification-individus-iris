@@ -1,11 +1,52 @@
 {% extends "base.html" %}
 
-{% block title %}Home page{% endblock %}
-{% block haut %}Home Page{% endblock %}
+{% block title %}Insérer une photo{% endblock %}
+{% block haut %}Insérer une photo{% endblock %}
 {% block content %}
-    <h2>Insérer une photo</h2>
-    <form action="#" method="post" enctype="multipart/form-data">
-        <input type="file" name="img" accept="image/*">
-        <input type="submit" value="Envoyer">
-    </form>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form action="#" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <br><br><br><label for="img" class="form-label">Sélectionner une photo</label>
+                            </div><br>
+                            <div>
+                                <input type="file" class="form-control custom-file-input" id="img" name="img" accept="image/*" onchange="previewImage(event)" >
+                            </div><br><br><br>
+                            <div class="container mt-4" id="imagePreviewContainer" style="display: none; text-align: center;">
+                                <h3>Aperçu de l'image</h3>
+                                <img id="imagePreview" class="img-fluid rounded mx-auto" alt="Aperçu de l'image">
+                                <div class="container mt-4" style="text-align: center;">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-6">
+                                            <br><button type="submit" class="btn">Envoyer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = reader.result;
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 {% endblock %}

@@ -1,10 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>{% block title %}{% endblock %}</title>
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        /* Ajoutez votre propre style CSS ici */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #343a40;
+            text-align: center;
+        }
+        /* Style pour le contenu spécifique */
+        .content-container {
+            margin: 20px;
+        }
+        /* Style pour les boutons */
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        /* Style pour l'élément input de type file */
+        .custom-file-input {
+            color: transparent;
+            cursor: pointer;
+        }
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+        .custom-file-input::before {
+            content: 'Sélectionner un fichier';
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 20px;
+            outline: none;
+            white-space: nowrap;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+        }
+        .custom-file-input:hover::before {
+            background: #0056b3;
+        }
+        .custom-file-input:active::before {
+            background: #004c9d;
+        }
+    </style>
+</head>
+<body>
+    <header>
         <h1>{% block haut %}{% endblock %}</h1>
+    </header>
+    
+    <div class="content-container">
         {% block content %}{% endblock %}
-    </body>
+    </div>
+
+    <!-- Ajoutez ici vos scripts JavaScript si nécessaire -->
+</body>
 </html>
