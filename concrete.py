@@ -1,22 +1,39 @@
 from flask import Flask, redirect, url_for, render_template, request
+from scipy.spatial.distance import euclidean
 import cv2
 import os
+import numpy as np
 
 
 
 # Fonction pour extraire les caractéristiques SIFT d'une image
 def extract_sift_features(image):
     #gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    sift = cv2.SIFT_create()
+    sift = cv2.SIFT_create(nfeatures=600000,        
+        nOctaveLayers=12,        
+        contrastThreshold=0.001,
+        edgeThreshold=0.1,
+        sigma=1.6
+        )
     keypoints, descriptors = sift.detectAndCompute(image, None)
-    return keypoints, descriptors
+    K=[]
+    D=[]
+    for i, j in zip(keypoints, descriptors):
+        x, y = i.pt
+        distance = euclidean((x, y), (383, 287))
+        if distance < 265 and distance > 70 :
+            K.append(i)
+            D.append(j)
+    return K, D
 
-def match_features(probleme_d, database_d, ration_distance=0.75):
+def match_features(probleme_d, database_d, ration_distance=0.9):
     bf = cv2.BFMatcher()
-    matches = bf.knnMatch(probleme_d, database_d, k=2)
+    probleme = np.array(probleme_d)
+    database = np.array(database_d)
+    matches = bf.knnMatch(probleme, database, k=2)
     good_matches = []
     for m, n in matches:
-        if m.distance < ration_distance* n.distance:
+        if (m.distance/n.distance) > ration_distance:
             good_matches.append(m)
     return good_matches
 
@@ -42,8 +59,8 @@ def home():
 def solution():
 # Paramètres
     
-    SEUIL = 40  # Ajustez le seuil selon vos besoins
-    probleme_c = cv2.imread("workspace/probleme.png",1)
+    SEUIL = 5  # Ajustez le seuil selon vos besoins
+    probleme_c = cv2.imread("workspace/probleme.png",0)
     # Base de données d'images
     database_images = []
     for file in sorted(os.listdir("database1")):
@@ -57,7 +74,7 @@ def solution():
     max_matches = 0
 
     for database in database_images:
-        database_c = cv2.imread(database,1)
+        database_c = cv2.imread(database,0)
         database_k, database_d = extract_sift_features(database_c)
         
         matches = match_features(probleme_d, database_d)
