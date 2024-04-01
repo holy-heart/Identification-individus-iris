@@ -9,19 +9,14 @@ import numpy as np
 # Fonction pour extraire les caractéristiques SIFT d'une image
 def extract_sift_features(image):
     #gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    sift = cv2.SIFT_create(nfeatures=600000,        
-        nOctaveLayers=12,        
-        contrastThreshold=0.001,
-        edgeThreshold=0.1,
-        sigma=1.6
-        )
+    sift = cv2.SIFT_create()
     keypoints, descriptors = sift.detectAndCompute(image, None)
     K=[]
     D=[]
     for i, j in zip(keypoints, descriptors):
         x, y = i.pt
         distance = euclidean((x, y), (383, 287))
-        if distance < 265 and distance > 70 :
+        if distance < 250 and distance > 70 :
             K.append(i)
             D.append(j)
     return K, D
@@ -48,7 +43,7 @@ def home():
     if request.method == "POST":
         image= request.files['img']
         image= image.read()
-        with open('workspace/probleme.png', "wb") as f:
+        with open('static/probleme.png', "wb") as f:
             f.write(image)
         return redirect(url_for("solution"))
     else:
@@ -60,7 +55,9 @@ def solution():
 # Paramètres
     
     SEUIL = 5  # Ajustez le seuil selon vos besoins
-    probleme_c = cv2.imread("workspace/probleme.png",0)
+    image_c = cv2.imread("static/probleme.png",cv2.IMREAD_GRAYSCALE)
+    probleme_c = cv2.equalizeHist(image_c)
+    cv2.imwrite("static/probleme.png", probleme_c)
     # Base de données d'images
     database_images = []
     for file in sorted(os.listdir("database1")):
@@ -74,19 +71,20 @@ def solution():
     max_matches = 0
 
     for database in database_images:
-        database_c = cv2.imread(database,0)
+        image_c2 = cv2.imread(database,cv2.IMREAD_GRAYSCALE)
+        database_c = cv2.equalizeHist(image_c2)
         database_k, database_d = extract_sift_features(database_c)
-        
+
         matches = match_features(probleme_d, database_d)
         print(database,len(matches))
-        
+
         if len(matches) > max_matches:
             match_sol= matches
             max_matches=len(match_sol)
             solution = database
             solution_c = database_c
             solution_k = database_k
-                
+
         # Décision basée sur le nombre de bonnes correspondances    
     if len(match_sol) > SEUIL:
         print("Personne identifiée pour un score matche de", len(match_sol), " avec la photo", solution)
@@ -99,7 +97,9 @@ def solution():
 
 
 
-
+A=[15,18]
+B=[0.04,0.03,0.02,0.01]
+C=[10,50]
+D=[1.6,1.8,0.6,0.8]
 if __name__ == '__main__':
     app.run(debug=True)
-
