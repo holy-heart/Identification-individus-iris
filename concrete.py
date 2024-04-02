@@ -63,10 +63,6 @@ def solution():
     for file in sorted(os.listdir("database1")):
         database_images.append(os.path.join("database1", file))
 
-    # Chemin vers l'image requête
-    ## probleme ="013L_1.png"  
-
-
     probleme_k, probleme_d = extract_sift_features(probleme_c)
     max_matches = 0
 
@@ -97,9 +93,5 @@ def solution():
 
 
 
-A=[15,18]
-B=[0.04,0.03,0.02,0.01]
-C=[10,50]
-D=[1.6,1.8,0.6,0.8]
 if __name__ == '__main__':
     app.run(debug=True)
