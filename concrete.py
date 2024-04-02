@@ -21,14 +21,14 @@ def extract_sift_features(image):
             D.append(j)
     return K, D
 
-def match_features(probleme_d, database_d, ration_distance=0.9):
+def match_features(probleme_d, database_d, ration_distance=0.76):
     bf = cv2.BFMatcher()
     probleme = np.array(probleme_d)
     database = np.array(database_d)
     matches = bf.knnMatch(probleme, database, k=2)
     good_matches = []
     for m, n in matches:
-        if (m.distance/n.distance) > ration_distance:
+        if (m.distance/n.distance) < ration_distance:
             good_matches.append(m)
     return good_matches
 
