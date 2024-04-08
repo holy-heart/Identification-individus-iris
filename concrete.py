@@ -43,18 +43,19 @@ def home():
     if request.method == "POST":
         image= request.files['img']
         image= image.read()
+        id=int(request.form['id'])
         with open('static/probleme.png', "wb") as f:
             f.write(image)
-        return redirect(url_for("solution"))
+        return redirect(url_for("solution", id=id))
     else:
         return render_template("insert.html")
 
 
-@app.route("/solution")
-def solution():
+@app.route("/solution/<id>")
+def solution(id):
 # Paramètres
     
-    SEUIL = 5  # Ajustez le seuil selon vos besoins
+    SEUIL = 100  # Ajustez le seuil selon vos besoins
     image_c = cv2.imread("static/probleme.png",cv2.IMREAD_GRAYSCALE)
     probleme_c = cv2.equalizeHist(image_c)
     cv2.imwrite("static/probleme.png", probleme_c)
@@ -70,7 +71,6 @@ def solution():
         image_c2 = cv2.imread(database,cv2.IMREAD_GRAYSCALE)
         database_c = cv2.equalizeHist(image_c2)
         database_k, database_d = extract_sift_features(database_c)
-
         matches = match_features(probleme_d, database_d)
         print(database,len(matches))
 
@@ -82,11 +82,11 @@ def solution():
             solution_k = database_k
 
         # Décision basée sur le nombre de bonnes correspondances    
-    if len(match_sol) > SEUIL:
+    if len(match_sol) > SEUIL and int(id)==int(os.path.basename(solution)[:3]):
         print("Personne identifiée pour un score matche de", len(match_sol), " avec la photo", solution)
         comp = cv2.drawMatches(probleme_c,probleme_k,solution_c, solution_k, match_sol, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
         cv2.imwrite("static/result.png", comp)
-        return render_template("sol.html", x=str(os.path.basename(solution))[:4])
+        return render_template("sol.html", id=str(os.path.basename(solution))[:3], eye=str(os.path.basename(solution))[3:4])
     else:
         print("Personne non reconnue")
         return render_template('refu.html')

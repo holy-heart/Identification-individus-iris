@@ -3,8 +3,12 @@
 {% block title %}Bravo{% endblock %}
 {% block haut %}Bravo!!{% endblock %}
 {% block content %}
-    <p>votre image a éte identifier avec succées</p>
-    <p>Vous etes referanceé en tant que</p> 
-    <h1> {{ x }} </h1>
+    <h1>Votre image a éte identifier avec succées</h1>
+    <p>Vous êtes identifier en tant que utilisateur numero {{ id }} </p>
+    {% if eye == L %}
+        <p>With the left eye</p>
+    {% else %}
+        <p>With the right eye</p>
+    {% endif %}    
     <img src="{{ url_for('static', filename='result.png')}}">
 {% endblock %}
