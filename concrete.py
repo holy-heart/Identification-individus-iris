@@ -8,7 +8,6 @@ import numpy as np
 
 # Fonction pour extraire les caractéristiques SIFT d'une image
 def extract_sift_features(image):
-    #gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     sift = cv2.SIFT_create()
     keypoints, descriptors = sift.detectAndCompute(image, None)
     K=[]
@@ -56,8 +55,8 @@ def solution(id):
 # Paramètres
     
     SEUIL = 100  # Ajustez le seuil selon vos besoins
-    image_c = cv2.imread("static/probleme.png",cv2.IMREAD_GRAYSCALE)
-    probleme_c = cv2.equalizeHist(image_c)
+    probleme_c = cv2.imread("static/probleme.png",cv2.IMREAD_GRAYSCALE)
+    probleme_c = cv2.equalizeHist(probleme_c)
     cv2.imwrite("static/probleme.png", probleme_c)
     # Base de données d'images
     database_images = []
