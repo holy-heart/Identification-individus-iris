@@ -4,4 +4,7 @@
 {% block haut %}REFUSÉ{% endblock %}
 {% block content %}
     <p>Nous somme vraiment désolé, mais votre image ne coresopond a aucun personne de notre base de donnée. Nous somme obligé de vous refuser l'acces.</p>
+    <a href="{{ url_for('home') }}">
+        <p>Revenir a la page d'acceuil</p>
+    </a>
 {% endblock %}

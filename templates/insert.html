@@ -1,33 +1,51 @@
 {% extends "base.html" %}
 
-{% block title %}Insérer une photo{% endblock %}
-{% block haut %}Insérer une photo{% endblock %}
-{% block content %}
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-body">
-                    <form action="#" method="post" enctype="multipart/form-data">
-                        <div class="mb-3"><br><br>
-                            
-                            <h2>Entrez votre id :</h2>
-                            <input type="text" name="id" required><br>
-                            <h2>Sélectionner une photo :</h2><br>
-                            <input type="file" class="form-control custom-file-input" id="img" name="img" accept="image/*" onchange="previewImage(event)" ><br><br><br>
-                        </div>
-                        
+{% block title %}Bienvenue{% endblock %}
+{% block haut %}Bienvenue{% endblock %}
 
-                        <div class="container mt-4" id="imagePreviewContainer" style="display: none; text-align: center;">
-                            <h3>Aperçu de l'image :</h3>
-                            <img id="imagePreview" class="img-fluid rounded mx-auto" alt="Aperçu de l'image"><br>
-                            <button type="submit" class="btn">Send</button>
-                        </div>
-                    </form>
+{% block content %}
+
+    <div class="row justify-content-center">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message alert alert-{{ category }}" >
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <h1>Inscription</h1>
+        <div>
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form action="#" method="post" enctype="multipart/form-data">
+                            <p><strong>Bienvenu sur ce site web qui permet d'experimenter l'identification par l'iris de l'oeil:</strong></p>
+                            <p>Cette partie permet d'introduire une photo dans base de donnée, celle ci contient deja 3 photo des deux yeux pour 64 personnes.</p>
+                            <br><br><hr><div class="mb-3"><br><br>
+                                <h2>Entrez votre id (Choisissez a partir de 65):</h2>
+                                <input type="text" name="id_i" required><br>
+                                <h2>Choisissez quelle oeil</h2>
+                                <select name="RL" id="RL">
+                                    <option value="R">Droite</option>
+                                    <option value="L">Gauche</option>
+                                </select>
+                                <h2>Sélectionner une photo :</h2>
+                                <input type="file" class="form-control custom-file-input" id="img_i" name="img_i" accept="image/*" onchange="previewImage(event)" ><br><br><br>
+                            </div>
+
+                            <div class="container mt-4" id="imagePreviewContainer" style="display: none; text-align: center;">
+                                <h3>Aperçu de l'image :</h3>
+                                <img id="imagePreview" class="img-fluid rounded mx-auto" alt="Aperçu de l'image"><br>
+                                <button type="submit" class="btn" name="formulaire" value="formulaire1">Send</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     
 
     

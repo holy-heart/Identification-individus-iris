@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request, flash
 from scipy.spatial.distance import euclidean
 import cv2
 import os
@@ -35,10 +35,34 @@ def match_features(probleme_d, database_d, ration_distance=0.76):
 
 
 app=Flask(__name__, static_url_path='/static')
+app.secret_key = 'hmmm'
 
 
 @app.route("/", methods=['POST', "GET"])
 def home():
+    if request.method == "POST":
+        image_i=request.files['img_i']
+        image_i=image_i.read()
+        id_i=request.form['id_i']
+        RL=request.form['RL']
+        if int(id_i) < 10:
+            filename = f'00{id_i}{RL}_1.png'
+        elif int(id_i) < 100:
+            filename = f'0{id_i}{RL}_1.png'
+        else:
+            filename = f'{id_i}{RL}_1.png'
+        with open(f'database1/{filename}', "wb") as f:
+            f.write(image_i)
+        flash("La photo a été ajoutée à la base de données avec succès.", "success")
+        return render_template("insert.html")
+        
+    else:
+        return render_template("insert.html")
+
+
+
+@app.route("/ident", methods=['POST', "GET"])
+def ident():
     if request.method == "POST":
         image= request.files['img']
         image= image.read()
@@ -47,7 +71,7 @@ def home():
             f.write(image)
         return redirect(url_for("solution", id=id))
     else:
-        return render_template("insert.html")
+        return render_template("ident.html")
 
 
 @app.route("/solution/<id>")

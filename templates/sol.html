@@ -6,9 +6,12 @@
     <h1>Votre image a éte identifier avec succées</h1>
     <p>Vous êtes identifier en tant que utilisateur numero {{ id }} </p>
     {% if eye == L %}
-        <p>With the left eye</p>
+        <p>L'oeil: Gauche</p>
     {% else %}
-        <p>With the right eye</p>
+        <p>L'oeil: Droite</p>
     {% endif %}    
     <img src="{{ url_for('static', filename='result.png')}}">
+    <a href="{{ url_for('home') }}">
+        <p>Revenir a la page d'acceuil</p>
+    </a>
 {% endblock %}

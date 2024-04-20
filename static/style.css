@@ -11,7 +11,7 @@ body{
     max-width: 10000000px; /* Largeur maximale du cadre */
     padding: 20px;
     border: 1px solid #000000; /* Bordure */
-    border-radius: 30px; /* Coins arrondis */
+    border-radius: 10px; /* Coins arrondis */
     background-color: #adafbd; /* Couleur de fond */
     overflow-x: auto;
     text-align: center;
@@ -69,6 +69,19 @@ nav{
 nav a img {
     max-height: 22px;
 }
+nav a {
+    margin-right: 20px; 
+    color: white;
+    text-decoration: none;
+}
 h3{
+    color: white;
+}
+.flash-message{
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #1c1723;
     color: white;
 }
