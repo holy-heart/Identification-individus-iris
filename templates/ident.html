@@ -10,19 +10,23 @@
             <div class="col-md-6">
                 <div class="card shadow">
                     <div class="card-body">
-                        <form action="#" method="post" enctype="multipart/form-data">
-                            <p>Cette deuxième partie permet d'identifier une photo biométrique de l'iris que vous introduisez avec la personne la plus correspondante.</p>
+                        <form id="myForm" action="#" method="post" enctype="multipart/form-data">
+                            <p><strong>Bienvenue sur ce site web qui permet d'expérimenter l'identification par l'iris de l'œil :</strong></p>
+                            <p>Cette première partie permet d'identifier une photo biométrique de l'iris avec la personne la plus correspondante.</p>
                             <br><br><hr><div class="mb-3"><br><br>
-                                <h2>Entrez votre id :</h2>
+                                <h2>Entrez l'id "8"</h2>
+                                <p>Si vous avez ajouté une photo à la base de données dans l'onglet Enregistrer en haut à gauche, et que vous souhaitez l'identifier, entrez l'id inséré précédemment </p>
                                 <input type="text" name="id" required><br>
-                                <h2>Sélectionner une photo :</h2><br>
+                                <h2>Sélectionner la photo :</h2>
+                                <p>008L_1_ident.png pour commencer, ident.png si vous avez enregistrer la photo ident.png precedaent, ou echec.png si vous vouler tester le cas d'echec</p><br>
                                 <input type="file" class="form-control custom-file-input" id="img" name="img" accept="image/*" onchange="previewImage(event)" ><br><br><br>
                             </div>
 
                             <div class="container mt-4" id="imagePreviewContainer" style="display: none; text-align: center;">
                                 <h3>Aperçu de l'image :</h3>
                                 <img id="imagePreview" class="img-fluid rounded mx-auto" alt="Aperçu de l'image"><br>
-                                <button type="submit" class="btn" name="formulaire" value="formulaire2">Send</button>
+                                <h3>L'identification dure environ 1 minute, l'avancement s'affiche dans le terminal</h3>
+                                <button type="submit" class="btn" name="formulaire" value="formulaire2" onclick="disableButton()">Send</button>
                             </div>
                         </form>
                     </div>
@@ -44,6 +48,12 @@
                 document.getElementById('imagePreviewContainer').style.display = 'block';
             }
             reader.readAsDataURL(event.target.files[0]);
+        }
+        
+        function disableButton() {
+            document.getElementById("myForm").submit();
+            var sendButton = document.querySelector('button[type="submit"]');
+            sendButton.disabled = true;
         }
     </script>
 {% endblock %}

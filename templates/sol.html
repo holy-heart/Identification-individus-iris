@@ -9,7 +9,8 @@
         <p>L'oeil: Gauche</p>
     {% else %}
         <p>L'oeil: Droite</p>
-    {% endif %}    
+    {% endif %}  
+    <p>{{pic}}</p>  
     <img src="{{ url_for('static', filename='result.png')}}">
     <a href="{{ url_for('home') }}">
         <p>Revenir a la page d'acceuil</p>
