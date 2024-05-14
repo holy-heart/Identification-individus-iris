@@ -3,7 +3,7 @@ from scipy.spatial.distance import euclidean
 import cv2
 import os
 import numpy as np
-
+#pip install Flask opencv-python-headless scipy numpy
 
 def extract_sift_features(image):
     sift = cv2.SIFT_create()
@@ -42,11 +42,10 @@ def home():
     if request.method == "POST":
         image= request.files['img']
         image= image.read()
-        id=int(request.form['id'])
 
         with open('static/probleme.png', "wb") as f:
             f.write(image)
-        return redirect(url_for("solution", id=id))
+        return redirect(url_for("solution"))
     else:
         return render_template("ident.html")
 
@@ -57,17 +56,9 @@ def insert():
     if request.method == "POST":
         image_i=request.files['img_i']
         image_i=image_i.read()
-        id_i=request.form['id_i']
-        RL=request.form['RL']
-        if int(id_i) < 10:
-            filename = f'00{id_i}{RL}_1.png'
-        elif int(id_i) < 100:
-            filename = f'0{id_i}{RL}_1.png'
-        else:
-            filename = f'{id_i}{RL}_1.png'
-        with open(f'database1/{filename}', "wb") as f:
+        with open(f'database1/sign.png', "wb") as f:
             f.write(image_i)
-        flash("La photo a été ajoutée à la base de données avec succès. vous pouvez l'identifier dans la page d'aceuile en haut a gauche avec une autre photo du meme oeil (ident.png). pour tester le cas d'echec vous pouvez esseyer d'identifier avec la photo echec.png", "success")
+        flash("La photo a été ajoutée à la base de données avec succès. Vous pouvez l'identifier sur la page d'accueil, en haut à gauche, avec une autre photo du même œil (ident.png).", "success")
         return render_template("insert.html")
         
     else:
@@ -75,8 +66,8 @@ def insert():
 
 
 
-@app.route("/solution/<id>")
-def solution(id):
+@app.route("/solution/")
+def solution():
     
     SEUIL = 100 
     probleme_c = cv2.imread("static/probleme.png",cv2.IMREAD_GRAYSCALE)
@@ -103,11 +94,14 @@ def solution(id):
             solution_c = database_c
             solution_k = database_k
 
-    if len(match_sol) > SEUIL and int(id)==int(os.path.basename(solution)[:3]):
-        print("Personne identifiée pour un score matche de", len(match_sol), " avec la photo", solution)
+    if len(match_sol) > SEUIL:
+        print("Personne identifiée avec un score de correspondance de", len(match_sol), " avec la photo", solution)
         comp = cv2.drawMatches(probleme_c,probleme_k,solution_c, solution_k, match_sol, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
         cv2.imwrite("static/result.png", comp)
-        return render_template("sol.html", id=str(os.path.basename(solution))[:3], eye=str(os.path.basename(solution))[3:4], pic=str(os.path.basename(solution)))
+        if len(os.path.basename(solution))==10:
+            return render_template("sol.html", id=str(os.path.basename(solution))[:3], eye=str(os.path.basename(solution))[3:4], pic=str(os.path.basename(solution)))
+        else : 
+            return render_template("sol.html", id=65, eye='R', pic=str(os.path.basename(solution)))
     else:
         print("Personne non reconnue")
         return render_template('refu.html')

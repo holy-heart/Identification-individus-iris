@@ -3,16 +3,16 @@
 {% block title %}Bravo{% endblock %}
 {% block haut %}Bravo!!{% endblock %}
 {% block content %}
-    <h1>Votre image a éte identifier avec succées</h1>
-    <p>Vous êtes identifier en tant que utilisateur numero {{ id }} </p>
-    {% if eye == L %}
-        <p>L'oeil: Gauche</p>
+    <h1>Votre image a été identifiée avec succès</h1>
+    <p>Vous êtes identifié en tant qu'utilisateur numéro {{ id }} </p>
+    {% if eye == 'L' %}
+        <p>L'œil: Gauche</p>
     {% else %}
-        <p>L'oeil: Droite</p>
+        <p>L'œil: Droit</p>
     {% endif %}  
-    <p>{{pic}}</p>  
-    <img src="{{ url_for('static', filename='result.png')}}">
+    <p>{{ pic }}</p>  
+    <img src="{{ url_for('static', filename='result.png') }}">
     <a href="{{ url_for('home') }}">
-        <p>Revenir a la page d'acceuil</p>
+        <p>Revenir à la page d'accueil</p>
     </a>
 {% endblock %}
