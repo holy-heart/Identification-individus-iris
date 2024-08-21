@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="icon" href="{% static 'favicon.png' %}" type="image/x-icon">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">
+            <img src="{% static 'home_logo.png' %}" alt="Logo">
+        </a>
+    </nav>
+    
+    <br>
+    <header>
+        <h1>{% block haut %}{% endblock %}</h1>
+    </header>
+    
+    <div class="container" style="width: 1200px;">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

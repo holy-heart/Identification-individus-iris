@@ -1,0 +1,32 @@
+{% extends "identification/base.html" %}
+
+{% block title %}Bienvenue{% endblock %}
+{% block haut %}Bienvenue{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <h1>Reconnaissance</h1>
+    <div>
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <p><strong>Bienvenue sur ce site web qui permet d'expérimenter l'identification par l'iris de l'œil :</strong></p>
+                        <p>Cette première partie permet d'identifier une photo biométrique de l'iris avec la personne la plus correspondante.</p>
+                        <div class="mb-3"><br><br>
+                            <h2>Sélectionner la photo :</h2>
+                            <p>Utiliser une image sortie de la base.</p>
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input id="input" type="submit" value="Valider">
+                            <br><br><br>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "identification/base.html" %}
+
+
+{% block title %}Bravo{% endblock %}
+{% block haut %}Bravo!!{% endblock %}
+{% block content %}
+    <h1>Votre image a été identifiée avec succès</h1>
+    <p>Vous êtes identifié en tant qu'utilisateur numéro {{ id }} </p>
+    {% if eye == 'L' %}
+        <p>L'œil: Gauche</p>
+    {% else %}
+        <p>L'œil: Droit</p>
+    {% endif %}  
+    <p>{{ pic }}</p>  
+    <img src="../../../media/result.png" alt='Resultat'>
+    <a href="{% url 'home' %}">
+        <p>Revenir à la page d'accueil</p>
+    </a>
+{% endblock %}
