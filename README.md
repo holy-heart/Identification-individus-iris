@@ -2,7 +2,7 @@
 
 # Identification par l'iris de l'oeil avec Python et Opencv
 
-## Projet consistant faire matcher deux yeux identiques a partir d'une base de données, en utilisant la technologie Opencv et Django pour l'insterface!
+## Projet visant à faire correspondre deux yeux identiques à partir d'une base de données, en utilisant la technologie OpenCV et le framework Django pour l'interface !
 
 Projet d’identification par l’iris de l'œil. La réalisation de ce projet a été faite avec la bibliothèque Opencv qui est spécialisée dans le traitement d’image, utile donc pour la comparaison des matches entre une photo insérée et la base de données. Pour l’interface, j’ai choisi le framework Django. Nous avons une base de données qui contient 3 photos de chaque œil de 64 personnes, donc 384 images.
 
