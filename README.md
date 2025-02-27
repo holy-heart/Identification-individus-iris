@@ -1,4 +1,4 @@
-![Logo](https://cdn.icon-icons.com/icons2/2699/PNG/512/opencv_logo_icon_170888.png)
+![Logo](https://opencv.org/wp-content/uploads/2022/05/logo.png)
 
 # Identification par l'iris de l'oeil avec Python et Opencv
 
